@@ -4,6 +4,11 @@ import com.auctionshortenedurl.repository.url.UrlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -26,24 +31,108 @@ public class UrlService {
             }
             String shortLink = new String(result);
 
-            // make sure the short link isn't already used
-//            url = urlRepository.getById(url.getUrlId());
-
-
-            // Bu kod tekrar yazilacak
-            boolean exist = false;
+            List<String> allShortenURLs = new ArrayList<>();
             urlRepository.findAll().forEach(url1 -> {
-//                if(url1.getShortUrl().equals(shortLink)){
-//                    exist = true;
-//                    break;
-//                }
+
+                // save all shortURLs exits into allShortenURLs list
+                allShortenURLs.add(url1.getShortUrl());
             });
 
+            // make sure the short link isn't already used
+            if (!allShortenURLs.contains(shortLink)) {
+                url.setShortUrl(shortLink);
+                return url;
+            }
+        }
+    }
 
-//            if (!urlRepository.findAll().contains(shortLink)){
-//                url.setShortUrl(shortLink);
-//                return url;
-//            }
+    public String openBrowser(Url url) {
+        try {
+
+            // İşletim sistemi kontrol etme
+            String os = this.whichOperatingSystem();
+
+            // döneceğimiz durum
+            // ilk başta cihaz desteklemiyor olacak
+            // alltakilerden herhangi bir cihaza sahipse, o durum değişmiş olacak
+            String status = "Cihazınız sağlayamdığından, URL yönlendirme işleminiz başarısızdır! \\n\\nLütfen farklı cihazdan deneyiniz...";
+
+            if (os.indexOf("win") >= 0)
+                status = this.openBrowserInWindows(url);
+            else if (os.indexOf("mac") >= 0)
+                status = this.openBrowserInMac(url);
+            else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0)
+                status = this.openBrowserInLinux(url);
+            return status;
+
+        } catch (Exception e) {
+            return "URL yönlendirme işleminiz başarısızdır, Lütfen Parametrelerinizi tekrar Doğrulayın!";
+        }
+    }
+
+    private String whichOperatingSystem() {
+        return System.getProperty("os.name").toLowerCase();
+    }
+
+    private String openBrowserInWindows(Url url) {
+        try {
+
+            String longUrl = url.getLongUrl();
+            Runtime rt = Runtime.getRuntime();
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + longUrl);
+            return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
+
+        } catch (IOException e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            return sStackTrace;
+        }
+    }
+
+    private String openBrowserInMac(Url url) {
+        try {
+
+            String longUrl = url.getLongUrl();
+            Runtime rt = Runtime.getRuntime();
+            rt.exec("open " + longUrl);
+            return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
+
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            return sStackTrace;
+        }
+    }
+
+    private String openBrowserInLinux(Url url) {
+        try {
+
+            String longUrl = url.getLongUrl();
+            Runtime rt = Runtime.getRuntime();
+            String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
+                    "netscape", "opera", "links", "lynx"};
+
+            StringBuffer cmd = new StringBuffer();
+            for (int i = 0; i < browsers.length; i++)
+                if (i == 0)
+                    cmd.append(String.format("%s \"%s\"", browsers[i], longUrl));
+                else
+                    cmd.append(String.format(" || %s \"%s\"", browsers[i], longUrl));
+            // If the first didn't work, try the next browser and so on
+
+            rt.exec(new String[]{"sh", "-c", cmd.toString()});
+
+            return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            return sStackTrace;
         }
     }
 }
