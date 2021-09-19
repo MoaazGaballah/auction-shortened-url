@@ -16,7 +16,6 @@ public class UrlController {
     private final UrlRepository urlRepository;
     private final UrlService urlService;
 
-
     @PostMapping("/shortenurl")
     public ResponseEntity<Object> shortenUrl(@RequestBody Url url){
         try {

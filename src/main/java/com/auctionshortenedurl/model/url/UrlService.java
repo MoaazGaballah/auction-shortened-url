@@ -74,6 +74,14 @@ public class UrlService {
         return System.getProperty("os.name").toLowerCase();
     }
 
+    private String convertExceptionIntoString(Exception e){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String sStackTrace = sw.toString(); // stack trace as a string
+        return sStackTrace;
+    }
+
     private String openBrowserInWindows(Url url) {
         try {
 
@@ -83,11 +91,7 @@ public class UrlService {
             return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
 
         } catch (IOException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            String sStackTrace = sw.toString(); // stack trace as a string
-            return sStackTrace;
+            return convertExceptionIntoString(e);
         }
     }
 
@@ -100,11 +104,7 @@ public class UrlService {
             return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
 
         } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            String sStackTrace = sw.toString(); // stack trace as a string
-            return sStackTrace;
+            return convertExceptionIntoString(e);
         }
     }
 
@@ -128,11 +128,7 @@ public class UrlService {
 
             return "URL yönlendirme işleminiz başarılıdır, " + longUrl + " 'ye Yönlendiriliyorsunuz!";
         } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            String sStackTrace = sw.toString(); // stack trace as a string
-            return sStackTrace;
+            return convertExceptionIntoString(e);
         }
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -33,8 +32,10 @@ public class UserController {
     public ResponseEntity<Object> login (@RequestBody UserInfo userInfo){
         try {
             User user = userRepository.findByEmail(userInfo.getEmail());
+
             if (user.getPassword().equals(userInfo.getPassword()))
                 return new ResponseEntity<>("Giriş Başarıyla yapıldı!", HttpStatus.OK);
+
             return new ResponseEntity<>("Hatalı email yada şifre, Lütfen Tekrar Kontrol ediniz.", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>("Lütfen Parametrelerinizi Doğrulayın!", HttpStatus.INTERNAL_SERVER_ERROR);
