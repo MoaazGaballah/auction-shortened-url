@@ -4,6 +4,7 @@ import com.auctionshortenedurl.model.user.User;
 import com.auctionshortenedurl.model.user.UserInfo;
 import com.auctionshortenedurl.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
+    @Autowired private final UserRepository userRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signup (@RequestBody User usr){

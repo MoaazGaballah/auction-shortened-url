@@ -4,6 +4,7 @@ import com.auctionshortenedurl.model.url.Url;
 import com.auctionshortenedurl.model.url.UrlService;
 import com.auctionshortenedurl.repository.url.UrlRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UrlController {
 
-    private final UrlRepository urlRepository;
+    @Autowired private final UrlRepository urlRepository;
     private final UrlService urlService;
 
     @PostMapping("/shortenurl")
