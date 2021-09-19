@@ -1,0 +1,9 @@
+com\auctionshortenedurl\AuctionShortenedUrlApplication.class
+com\auctionshortenedurl\model\url\Url.class
+com\auctionshortenedurl\model\user\UserInfo.class
+com\auctionshortenedurl\controller\user\UserController.class
+com\auctionshortenedurl\controller\url\UrlController.class
+com\auctionshortenedurl\model\url\UrlService.class
+com\auctionshortenedurl\model\user\User.class
+com\auctionshortenedurl\repository\url\UrlRepository.class
+com\auctionshortenedurl\repository\user\UserRepository.class
