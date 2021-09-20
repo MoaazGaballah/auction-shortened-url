@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "urls", uniqueConstraints = {@UniqueConstraint(columnNames = "url_id")})
+@Table(name = "url", uniqueConstraints = {@UniqueConstraint(columnNames = "url_id")})
 public class Url {
 
     @Id

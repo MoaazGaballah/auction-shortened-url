@@ -1,14 +1,12 @@
 package com.auctionshortenedurl.model.user;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
-@Builder
 @Data
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id")})
+@Table(name = "user_table", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id")})
 public class User {
 
     @Id

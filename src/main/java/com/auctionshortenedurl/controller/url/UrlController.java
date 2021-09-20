@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UrlController {
 
-    @Autowired private final UrlRepository urlRepository;
     private final UrlService urlService;
 
     @PostMapping("/shortenurl")
@@ -23,7 +22,8 @@ public class UrlController {
 
             url = urlService.shortenUrl(url);
 
-            urlRepository.save(url);
+            urlService.kaydet(url);
+
             return new ResponseEntity<>( "URLınız başarılıyla kısaltılmıştır. Kısa URLiniz: " + url.getShortUrl(), HttpStatus.OK);
 
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class UrlController {
     public ResponseEntity<Object> gotoLink(@PathVariable String strUrl){
         String status = "";
         try{
-            Url url = urlRepository.findByShortUrl(strUrl);
+            Url url = urlService.getUrlByEmail(strUrl);
             status = urlService.openBrowser(url);
             return new ResponseEntity<>(status, HttpStatus.OK);
 

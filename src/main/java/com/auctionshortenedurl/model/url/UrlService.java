@@ -1,9 +1,12 @@
 package com.auctionshortenedurl.model.url;
 
+import com.auctionshortenedurl.model.user.User;
 import com.auctionshortenedurl.repository.url.UrlRepository;
+import com.auctionshortenedurl.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,10 +19,24 @@ import java.util.Random;
 public class UrlService {
 
     private final UrlRepository urlRepository;
+    private final UserRepository userRepository;
 
     private static final int NUM_CHARS_SHORT_LINK = 7;
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private Random random = new Random();
+
+    @Transactional
+    public void kaydet(Url url){
+
+        User user = userRepository.getById(url.getUser().getUserId());
+        url.setUser(user);
+
+        urlRepository.save(url);
+    }
+
+    public Url getUrlByEmail(String strUrl){
+        return this.urlRepository.findByShortUrl(strUrl);
+    }
 
     public Url shortenUrl(Url url) {
 

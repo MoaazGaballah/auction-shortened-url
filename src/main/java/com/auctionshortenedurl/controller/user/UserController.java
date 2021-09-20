@@ -2,25 +2,27 @@ package com.auctionshortenedurl.controller.user;
 
 import com.auctionshortenedurl.model.user.User;
 import com.auctionshortenedurl.model.user.UserInfo;
-import com.auctionshortenedurl.repository.user.UserRepository;
+import com.auctionshortenedurl.model.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired private final UserRepository userRepository;
+    @Autowired
+    private final UserService userService;
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signup (@RequestBody User usr){
         try{
 
-            userRepository.save(usr);
+            userService.kaydet(usr);
             return new ResponseEntity<>("Üye kaydınız başarılıyla alınmıştır.", HttpStatus.OK);
 
         } catch (Exception e){
@@ -32,7 +34,7 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<Object> login (@RequestBody UserInfo userInfo){
         try {
-            User user = userRepository.findByEmail(userInfo.getEmail());
+            User user = userService.getUser(userInfo);
 
             if (user.getPassword().equals(userInfo.getPassword()))
                 return new ResponseEntity<>("Giriş Başarıyla yapıldı!", HttpStatus.OK);

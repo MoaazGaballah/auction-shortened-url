@@ -4,6 +4,7 @@ import com.auctionshortenedurl.model.user.User;
 import com.auctionshortenedurl.model.user.UserInfo;
 import com.auctionshortenedurl.repository.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-//@WebMvcTest(UserController.class)
+@RequiredArgsConstructor
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
     @Autowired
@@ -33,11 +34,14 @@ public class UserControllerTest {
     UserRepository userRepository;
 
     // bu nesneleri test amaçlıdır
-    User user1 = User.builder().ad("Moaaz").email("test8@test.com").password("1").soyad("Yildiz").build();
-    User user2 = User.builder().ad("Ayse").email("test9@test.com").password("1").soyad("Sari").build();
-    User user3 = User.builder().ad("Ahmet").email("test10@test.com").password("1").soyad("Ak").build();
+    User user1;
+    User user2;
+    User user3;
+//    User user1 = User.builder().ad("Moaaz").email("test8@test.com").password("1").soyad("Yildiz").build();
+//    User user2 = User.builder().ad("Ayse").email("test9@test.com").password("1").soyad("Sari").build();
+//    User user3 = User.builder().ad("Ahmet").email("test10@test.com").password("1").soyad("Ak").build();
 
-//    @Test
+    @Test
     public void login_success() {
         try {
             List<User> records = new ArrayList<>(Arrays.asList(user1, user2, user3));
