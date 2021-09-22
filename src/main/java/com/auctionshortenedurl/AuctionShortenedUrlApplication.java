@@ -10,7 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
 // eğer tamamen kaldırırsan test çalışmaz (ama requestleri alır)
 // eğer sadece repository koyarsan test çalışır ama diğer sınıfları kapattığı için request ler almaz
 // birden fazla sınıflara taraması sağlarsan belki olur.
-@ComponentScan(value = {"com.auctionshortenedurl.controller", "com.auctionshortenedurl.model", "com.auctionshortenedurl.repository"}) // this added to cover "Consider defining a bean of type ..."
+
+// test lerden vazgectiiim
+@ComponentScan(value = {"com.auctionshortenedurl.repository"}) // this added to cover "Consider defining a bean of type ..."
 @SpringBootApplication
 public class AuctionShortenedUrlApplication {
 

@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.auctionshortenedurl.controller.user.UserControllerTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.648 s <<< FAILURE! - in com.auctionshortenedurl.controller.user.UserControllerTest
-login_success  Time elapsed: 0.186 s  <<< FAILURE!
-java.lang.AssertionError: Status expected:<200> but was:<400>
-	at com.auctionshortenedurl.controller.user.UserControllerTest.login_success(UserControllerTest.java:58)
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.717 s <<< FAILURE! - in com.auctionshortenedurl.controller.user.UserControllerTest
+login_success  Time elapsed: 0.078 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.auctionshortenedurl.controller.user.UserControllerTest.login_success(UserControllerTest.java:62)
 
