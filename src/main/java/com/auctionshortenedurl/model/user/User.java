@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_table", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id")})
 public class User {
-
     @Id
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)

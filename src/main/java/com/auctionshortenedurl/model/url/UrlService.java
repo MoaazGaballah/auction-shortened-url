@@ -1,12 +1,13 @@
 package com.auctionshortenedurl.model.url;
 
 import com.auctionshortenedurl.model.user.User;
+import com.auctionshortenedurl.model.user.UserInfo;
 import com.auctionshortenedurl.repository.url.UrlRepository;
 import com.auctionshortenedurl.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,16 +27,12 @@ public class UrlService {
     private Random random = new Random();
 
     @Transactional
-    public void kaydet(Url url){
+    public void kaydet(Url url) {
 
         User user = userRepository.getById(url.getUser().getUserId());
         url.setUser(user);
 
         urlRepository.save(url);
-    }
-
-    public Url getUrlByEmail(String strUrl){
-        return this.urlRepository.findByShortUrl(strUrl);
     }
 
     public Url shortenUrl(Url url) {
@@ -63,16 +60,19 @@ public class UrlService {
         }
     }
 
-    public String openBrowser(Url url) {
+    public String openBrowser(String strUrl) {
+        String status = "Cihazınız sağlayamdığından, URL yönlendirme işleminiz başarısızdır! \\n\\nLütfen farklı cihazdan deneyiniz...";
         try {
 
+            Url url = urlRepository.findByShortUrl(strUrl);
+
+            if (url == null) return "Göndermiş olduğunuz url yi tekrar kontrol ediniz";
             // İşletim sistemi kontrol etme
             String os = this.whichOperatingSystem();
 
             // döneceğimiz durum
             // ilk başta cihaz desteklemiyor olacak
             // alltakilerden herhangi bir cihaza sahipse, o durum değişmiş olacak
-            String status = "Cihazınız sağlayamdığından, URL yönlendirme işleminiz başarısızdır! \\n\\nLütfen farklı cihazdan deneyiniz...";
 
             if (os.indexOf("win") >= 0)
                 status = this.openBrowserInWindows(url);
@@ -81,9 +81,8 @@ public class UrlService {
             else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0)
                 status = this.openBrowserInLinux(url);
             return status;
-
         } catch (Exception e) {
-            return "URL yönlendirme işleminiz başarısızdır, Lütfen Parametrelerinizi tekrar Doğrulayın!";
+            return "Göndermiş olduğunuz url yi tekrar kontrol ediniz";
         }
     }
 
@@ -91,7 +90,7 @@ public class UrlService {
         return System.getProperty("os.name").toLowerCase();
     }
 
-    private String convertExceptionIntoString(Exception e){
+    private String convertExceptionIntoString(Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
